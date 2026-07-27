@@ -43,9 +43,9 @@ Hi, I'm Navneet Barmase! 👋🏼
 I am an engineering student and full-stack developer with a strong bias toward backend architecture. I love tackling complex algorithms, mastering data structures, and engineering the core logic that powers scalable systems.
 Currently, I'm building Price-Sentinel and documenting my technical journey in public.
 
-[💼 LinkedIn](https://linkedin.com/in/navneetbarmase)
-[🐙 GitHub](https://github.com/i-qudit)
-[✉️ Email Me](mailto:navneetbarmase11@gmail.com)
+[💼 LinkedIn](https://linkedin.com/in/navneetbarmase).
+[🐙 GitHub](https://github.com/i-qudit).
+[✉️ Email Me](mailto:navneetbarmase11@gmail.com).
 
 If you liked this project or found the code helpful, feel free to give it a ⭐!
    
