@@ -3,6 +3,8 @@ let main = {
     turn: 'w',
     selectedpiece: '',
     highlighted: [],
+    moveSound: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3'),
+    captureSound: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3'),
     pieces: {
       w_king: { position: '5_1', img: '&#9812;', captured: false, moved: false, type: 'w_king' },
       w_queen: { position: '4_1', img: '&#9813;', captured: false, moved: false, type: 'w_queen' },
@@ -65,7 +67,6 @@ let main = {
       let row = targetId.split('_')[1];
 
       if (isPawn && ((isWhite && row === '8') || (!isWhite && row === '1'))) {
-        
         let unicodeMap = {
           'queen': isWhite ? '&#9813;' : '&#9819;',
           'rook': isWhite ? '&#9814;' : '&#9820;',
@@ -123,28 +124,34 @@ let main = {
 
       switch (p.type) {
         case 'w_king':
+          let w_k_moves = [{ x: 1, y: 1 },{ x: 1, y: 0 },{ x: 1, y: -1 },{ x: 0, y: -1 },{ x: -1, y: -1 },{ x: -1, y: 0 },{ x: -1, y: 1 },{ x: 0, y: 1 }];
+          
           if ($('#6_1').attr('chess') == 'null' && $('#7_1').attr('chess') == 'null' && p.moved == false && main.variables.pieces['w_rook2'].moved == false) {
-            coordinates = [{ x: 1, y: 1 },{ x: 1, y: 0 },{ x: 1, y: -1 },{ x: 0, y: -1 },{ x: -1, y: -1 },{ x: -1, y: 0 },{ x: -1, y: 1 },{ x: 0, y: 1 },{x: 2, y: 0}].map(function(val){
-              return (parseInt(position.x) + parseInt(val.x)) + '_' + (parseInt(position.y) + parseInt(val.y));
-            });
-          } else {
-            coordinates = [{ x: 1, y: 1 },{ x: 1, y: 0 },{ x: 1, y: -1 },{ x: 0, y: -1 },{ x: -1, y: -1 },{ x: -1, y: 0 },{ x: -1, y: 1 },{ x: 0, y: 1 }].map(function(val){
-              return (parseInt(position.x) + parseInt(val.x)) + '_' + (parseInt(position.y) + parseInt(val.y));
-            });
+            w_k_moves.push({x: 2, y: 0});
           }
+          if ($('#2_1').attr('chess') == 'null' && $('#3_1').attr('chess') == 'null' && $('#4_1').attr('chess') == 'null' && p.moved == false && main.variables.pieces['w_rook1'].moved == false) {
+            w_k_moves.push({x: -2, y: 0});
+          }
+          
+          coordinates = w_k_moves.map(function(val){
+            return (parseInt(position.x) + parseInt(val.x)) + '_' + (parseInt(position.y) + parseInt(val.y));
+          });
           options = (main.methods.options(startpoint, coordinates, p.type)).slice(0);
           break;
 
         case 'b_king':
+          let b_k_moves = [{ x: 1, y: 1 },{ x: 1, y: 0 },{ x: 1, y: -1 },{ x: 0, y: -1 },{ x: -1, y: -1 },{ x: -1, y: 0 },{ x: -1, y: 1 },{ x: 0, y: 1 }];
+          
           if ($('#6_8').attr('chess') == 'null' && $('#7_8').attr('chess') == 'null' && p.moved == false && main.variables.pieces['b_rook2'].moved == false) {
-            coordinates = [{ x: 1, y: 1 },{ x: 1, y: 0 },{ x: 1, y: -1 },{ x: 0, y: -1 },{ x: -1, y: -1 },{ x: -1, y: 0 },{ x: -1, y: 1 },{ x: 0, y: 1 },{x: 2, y: 0}].map(function(val){
-              return (parseInt(position.x) + parseInt(val.x)) + '_' + (parseInt(position.y) + parseInt(val.y));
-            });
-          } else {
-            coordinates = [{ x: 1, y: 1 },{ x: 1, y: 0 },{ x: 1, y: -1 },{ x: 0, y: -1 },{ x: -1, y: -1 },{ x: -1, y: 0 },{ x: -1, y: 1 },{ x: 0, y: 1 }].map(function(val){
-              return (parseInt(position.x) + parseInt(val.x)) + '_' + (parseInt(position.y) + parseInt(val.y));
-            });
+            b_k_moves.push({x: 2, y: 0});
           }
+          if ($('#2_8').attr('chess') == 'null' && $('#3_8').attr('chess') == 'null' && $('#4_8').attr('chess') == 'null' && p.moved == false && main.variables.pieces['b_rook1'].moved == false) {
+            b_k_moves.push({x: -2, y: 0});
+          }
+          
+          coordinates = b_k_moves.map(function(val){
+            return (parseInt(position.x) + parseInt(val.x)) + '_' + (parseInt(position.y) + parseInt(val.y));
+          });
           options = (main.methods.options(startpoint, coordinates, p.type)).slice(0);
           break;
 
@@ -442,7 +449,7 @@ let main = {
         });
     },
 
-    capture: function (target) {
+capture: function (target) {
       let selectedpiece = {
         name: $('#' + main.variables.selectedpiece).attr('chess'),
         id: main.variables.selectedpiece
@@ -459,6 +466,8 @@ let main = {
       main.variables.pieces[selectedpiece.name].position = target.id;
       main.variables.pieces[selectedpiece.name].moved = true;
       main.variables.pieces[target.name].captured = true;
+
+      main.variables.captureSound.play();
     },
 
     move: function (target) {
@@ -472,6 +481,8 @@ let main = {
       
       main.variables.pieces[selectedpiece].position = target.id;
       main.variables.pieces[selectedpiece].moved = true;
+
+      main.variables.moveSound.play();
     },
 
     endturn: function(){
@@ -524,17 +535,18 @@ $(document).ready(function() {
     } 
     else if (main.variables.selectedpiece !='' && target.name == 'null') { 
       
-      if (main.variables.highlighted.indexOf(target.id) !== -1) {
-          
+     if (main.variables.highlighted.indexOf(target.id) !== -1) {
+         
         let t0 = (selectedpiece.name === 'w_king');
         let t1 = (selectedpiece.name === 'b_king');
         let t2 = (main.variables.pieces[selectedpiece.name] && main.variables.pieces[selectedpiece.name].moved == false);
-        let t3 = (main.variables.pieces['b_rook2'] && main.variables.pieces['b_rook2'].moved == false);
-        let t4 = (main.variables.pieces['w_rook2'] && main.variables.pieces['w_rook2'].moved == false);
-        let t5 = (target.id == '7_8');
-        let t6 = (target.id == '7_1');
-  
-        if (t0 && t2 && t4 && t6) { 
+        
+        let w_rook2_unmoved = (main.variables.pieces['w_rook2'] && main.variables.pieces['w_rook2'].moved == false);
+        let w_rook1_unmoved = (main.variables.pieces['w_rook1'] && main.variables.pieces['w_rook1'].moved == false);
+        let b_rook2_unmoved = (main.variables.pieces['b_rook2'] && main.variables.pieces['b_rook2'].moved == false);
+        let b_rook1_unmoved = (main.variables.pieces['b_rook1'] && main.variables.pieces['b_rook1'].moved == false);
+
+        if (t0 && t2 && w_rook2_unmoved && target.id == '7_1') { 
           let k_position = '5_1';
           let k_target = '7_1';
           let r_position = '8_1';
@@ -542,23 +554,35 @@ $(document).ready(function() {
   
           main.variables.pieces['w_king'].position = '7_1';
           main.variables.pieces['w_king'].moved = true;
-          $('#'+k_position).html('');
-          $('#'+k_position).attr('chess','null');
-          
-          $('#'+k_target).html(main.methods.getPieceHTML('w_king'));
-          $('#'+k_target).attr('chess','w_king');
+          $('#'+k_position).html('').attr('chess','null');
+          $('#'+k_target).html(main.methods.getPieceHTML('w_king')).attr('chess','w_king');
   
           main.variables.pieces['w_rook2'].position = '6_1';
           main.variables.pieces['w_rook2'].moved = true;
-          $('#'+r_position).html('');
-          $('#'+r_position).attr('chess','null');
-          
-          $('#'+r_target).html(main.methods.getPieceHTML('w_rook2'));
-          $('#'+r_target).attr('chess','w_rook2');
-  
+          $('#'+r_position).html('').attr('chess','null');
+          $('#'+r_target).html(main.methods.getPieceHTML('w_rook2')).attr('chess','w_rook2');
+  main.variables.moveSound.play();
           main.methods.endturn();
   
-        } else if (t1 && t2 && t3 && t5) { 
+        } else if (t0 && t2 && w_rook1_unmoved && target.id == '3_1') { 
+          let k_position = '5_1';
+          let k_target = '3_1';
+          let r_position = '1_1';
+          let r_target = '4_1';
+  
+          main.variables.pieces['w_king'].position = '3_1';
+          main.variables.pieces['w_king'].moved = true;
+          $('#'+k_position).html('').attr('chess','null');
+          $('#'+k_target).html(main.methods.getPieceHTML('w_king')).attr('chess','w_king');
+  
+          main.variables.pieces['w_rook1'].position = '4_1';
+          main.variables.pieces['w_rook1'].moved = true;
+          $('#'+r_position).html('').attr('chess','null');
+          $('#'+r_target).html(main.methods.getPieceHTML('w_rook1')).attr('chess','w_rook1');
+  main.variables.moveSound.play();
+          main.methods.endturn();
+
+        } else if (t1 && t2 && b_rook2_unmoved && target.id == '7_8') { 
           let k_position = '5_8';
           let k_target = '7_8';
           let r_position = '8_8';
@@ -566,22 +590,34 @@ $(document).ready(function() {
   
           main.variables.pieces['b_king'].position = '7_8';
           main.variables.pieces['b_king'].moved = true;
-          $('#'+k_position).html('');
-          $('#'+k_position).attr('chess','null');
-          
-          $('#'+k_target).html(main.methods.getPieceHTML('b_king'));
-          $('#'+k_target).attr('chess','b_king');
+          $('#'+k_position).html('').attr('chess','null');
+          $('#'+k_target).html(main.methods.getPieceHTML('b_king')).attr('chess','b_king');
   
           main.variables.pieces['b_rook2'].position = '6_8';
           main.variables.pieces['b_rook2'].moved = true;
-          $('#'+r_position).html('');
-          $('#'+r_position).attr('chess','null');
-          
-          $('#'+r_target).html(main.methods.getPieceHTML('b_rook2'));
-          $('#'+r_target).attr('chess','b_rook2');
-  
+          $('#'+r_position).html('').attr('chess','null');
+          $('#'+r_target).html(main.methods.getPieceHTML('b_rook2')).attr('chess','b_rook2');
+  main.variables.moveSound.play();
           main.methods.endturn();
           
+        } else if (t1 && t2 && b_rook1_unmoved && target.id == '3_8') { 
+          let k_position = '5_8';
+          let k_target = '3_8';
+          let r_position = '1_8';
+          let r_target = '4_8';
+  
+          main.variables.pieces['b_king'].position = '3_8';
+          main.variables.pieces['b_king'].moved = true;
+          $('#'+k_position).html('').attr('chess','null');
+          $('#'+k_target).html(main.methods.getPieceHTML('b_king')).attr('chess','b_king');
+  
+          main.variables.pieces['b_rook1'].position = '4_8';
+          main.variables.pieces['b_rook1'].moved = true;
+          $('#'+r_position).html('').attr('chess','null');
+          $('#'+r_target).html(main.methods.getPieceHTML('b_rook1')).attr('chess','b_rook1');
+  main.variables.moveSound.play();
+          main.methods.endturn();
+
         } else { 
           main.methods.move(target);
           
@@ -598,6 +634,7 @@ $(document).ready(function() {
         
         let isPromoting = main.methods.checkPawnPromotion(selectedpiece.name, target.id);
         if (!isPromoting) {
+
             main.methods.endturn();
         }
       }
