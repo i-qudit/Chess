@@ -11,28 +11,52 @@
 
   <div class="app-layout">
     
-    <aside class="about-section">
-      <div class="about-card">
-        <div class="profile-header">
-          <img src="pf.png" alt="Navneet Barmase" class="profile-photo">
-          <h2>Navneet Barmase</h2>
+   <div class="about-section">
+  <div class="flip-card-container">
+    <div class="flip-card">
+    
+      <div class="card-face card-front">
+        <div class="profile-content">
+          <img src="pf.png" class="flip-avatar">
+ 
+          <h2 class="flip-name">Navneet Barmase</h2>
+          <p class="flip-title">Backend Software Engineer</p>
         </div>
-        <p>Engineering student and full-stack developer with a strong bias toward backend architecture. I love tackling complex algorithms, mastering data structures, and engineering the core logic that powers scalable systems.</p>
-        <p>Currently building <em>Price-Sentinel</em> and looking forward to upcoming placement cycles and mentorship opportunities.</p>
         
-        <div class="tags">
-          <span>Backend Architecture</span>
-          <span>Full Stack</span>
-          <span>Software Engineering</span>
-        </div>
-
-        <div class="social-links">
-          <a href="https://linkedin.com/in/navneetbarmase" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://github.com/i-qudit" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="mailto:navneetbarmase11@gmail.com">Email</a>
+       
+        <div class="flip-indicator">
+          <span>Hover to flip for contacts</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 10 4 15 9 20"></polyline>
+            <path d="M20 4v7a4 4 0 0 1-4 4H4"></path>
+          </svg>
         </div>
       </div>
-    </aside>
+
+      
+      <div class="card-face card-back">
+        <h3 class="back-title">Let's Connect</h3>
+        
+        <ul class="flip-contact-list">
+          
+          <li>
+            <span class="flip-icon">✉️</span>
+            <a href="mailto:navneetbarmase11@gmail.com" class="flip-info flip-link">navneetbarmase11@gmail.com</a>
+          </li>
+          <li>
+            <span class="flip-icon">💼</span>
+            <a href="https://linkedin.com/in/navneetbarmase" target="_blank" class="flip-info flip-link">linkedin.com/in/navneetbarmase</a>
+          </li>
+          <li>
+            <span class="flip-icon">💻</span>
+            <a href="https://github.com/i-qudit" target="_blank" class="flip-info flip-link">github.com/i-qudit</a>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
 
     <main class="chess-environment">
       
@@ -57,9 +81,13 @@
           </div>
         </div>
         
-        <div id="game-status-banner">
-          <span id="status-text">White's Turn</span>
-        </div>
+        <div class="game-controls-header">
+  <div id="game-status-banner">White's Turn</div>
+  
+  <button id="permanent-restart-btn" class="permanent-restart">
+    <span class="restart-icon">↻</span> Restart
+  </button>
+</div>
 
         <div id="game-over-modal" class="modal-overlay">
           <div class="modal-content">
@@ -171,6 +199,28 @@
 
     </main>
   </div>
+
+<div id="game-over-modal" class="modal-overlay">
+  <div class="modal-content">
+    <h2 id="game-result">Game Over</h2>
+    <div class="modal-actions">
+      <button id="review-board-btn" class="secondary-btn">Review Board</button>
+      <button id="play-again-btn" class="restart-btn">Play Again</button>
+    </div>
+  </div>
+</div>
+
+<div id="confirm-restart-modal" class="modal-overlay">
+  <div class="modal-content warning-modal">
+    <div class="warning-icon">⚠️</div>
+    <h2>Restart Game?</h2>
+    <p>Are you sure you want to abandon the current game? This cannot be undone.</p>
+    <div class="modal-actions">
+      <button id="cancel-restart-btn" class="secondary-btn">Cancel</button>
+      <button id="confirm-restart-btn" class="danger-btn">Yes, Restart</button>
+    </div>
+  </div>
+</div>
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
   <script src="./script.js"></script>
