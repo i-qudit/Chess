@@ -7,6 +7,8 @@ let main = {
     initialPieces: null,
     moveSound: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3'),
     captureSound: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3'),
+    winSound: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/game-end.mp3'),
+    drawSound: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/game-end.mp3'),
     pieces: {
       w_king: { position: '5_1', img: '&#9812;', captured: false, moved: false, type: 'w_king' },
       w_queen: { position: '4_1', img: '&#9813;', captured: false, moved: false, type: 'w_queen' },
@@ -442,15 +444,18 @@ let main = {
           let winner = color === 'w' ? "Black" : "White";
           resultMsg = `Checkmate! ${winner} Wins.`;
           $('#status-text').text("Game Over");
+          $('#game-result-icon').text("🏆");
+          main.variables.winSound.play();
         } else {
           resultMsg = "Stalemate! It's a Draw.";
           $('#status-text').text("Game Over");
+          $('#game-result-icon').text("🤝");
+          main.variables.drawSound.play();
         }
         
         $('#game-result').text(resultMsg);
-        $('#game-over-modal').addClass('show-modal');
-        
         main.variables.gameOver = true;
+        $('#game-over-modal').addClass('show-modal');
         
       } else if (inCheck) {
         $('#status-text').text("CHECK!");
@@ -544,7 +549,7 @@ $(document).ready(function() {
     $('#confirm-restart-modal').addClass('show-modal');
   });
 
-  $('#confirm-restart-btn, #play-again-btn').click(function() {
+  $('#confirm-restart-btn').click(function() {
     main.methods.resetGame();
   });
 
@@ -552,7 +557,7 @@ $(document).ready(function() {
     $('#confirm-restart-modal').removeClass('show-modal');
   });
 
-  $('#review-board-btn').click(function() {
+  $('#close-game-over').click(function() {
     $('#game-over-modal').removeClass('show-modal');
   });
 

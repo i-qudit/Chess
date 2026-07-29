@@ -89,12 +89,7 @@
   </button>
 </div>
 
-        <div id="game-over-modal" class="modal-overlay">
-          <div class="modal-content">
-            <h2 id="game-result">Checkmate!</h2>
-            <button class="restart-btn" onclick="window.location.reload();">Restart Game</button>
-          </div>
-        </div>
+       
 
         <div id="game">
           <div class='cellprefix'>8</div>
@@ -200,16 +195,15 @@
     </main>
   </div>
 
+
 <div id="game-over-modal" class="modal-overlay">
-  <div class="modal-content">
+  <div class="modal-content game-over-content">
+    <button id="close-game-over" class="close-modal-btn">&times;</button>
+    <div id="game-result-icon" class="game-over-icon">🏆</div>
     <h2 id="game-result">Game Over</h2>
-    <div class="modal-actions">
-      <button id="review-board-btn" class="secondary-btn">Review Board</button>
-      <button id="play-again-btn" class="restart-btn">Play Again</button>
-    </div>
+    <p class="game-over-subtitle">Close this window to analyze the final board state.</p>
   </div>
 </div>
-
 <div id="confirm-restart-modal" class="modal-overlay">
   <div class="modal-content warning-modal">
     <div class="warning-icon">⚠️</div>
